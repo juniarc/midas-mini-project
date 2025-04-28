@@ -3,10 +3,7 @@ package dev.codejar.controller;
 
 import dev.codejar.model.dto.HrDashboardDto;
 import dev.codejar.repository.EmployeeRepository;
-import dev.codejar.repository.TimesheetRepository;
-import dev.codejar.repository.projection.EmployeeManagerProjection;
 import dev.codejar.repository.projection.HrDashboardProjection;
-import dev.codejar.repository.projection.SubmissionStatusProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
