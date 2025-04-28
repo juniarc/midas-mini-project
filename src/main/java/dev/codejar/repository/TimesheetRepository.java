@@ -15,7 +15,7 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
 
 
 
-    @Query(value = "SELECT submission_date AS submissionDate, approval_status AS approvalStatus FROM vw_submission_status", nativeQuery = true)
+    @Query(value = "SELECT submit_date AS submissionDate, report_status AS approvalStatus FROM vw_submission_status", nativeQuery = true)
     List<SubmissionStatusProjection> findSubmissionStatus();
 
 

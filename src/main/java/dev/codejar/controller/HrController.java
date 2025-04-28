@@ -49,6 +49,7 @@ public class HrController {
                         timesheet.getSubmissionDate(),
                         timesheet.getApprovalStatus()
                 );
+                System.out.println(dashboard);
                 dashboard.add(dto);
             }
         }

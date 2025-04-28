@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Integer> {
 
-    @Query(value = "SELECT EMPLOYEENAME AS employeeName, MANAGERNAME AS managerName FROM  vw_employee_manager", nativeQuery = true)
+    @Query(value = "SELECT EMPLOYEE_NAME AS employeeName, MANAGER_NAME AS managerName FROM  vw_employee_manager", nativeQuery = true)
     List<EmployeeManagerProjection> findEmployeeAndManager();
 
 }
