@@ -14,7 +14,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class HrDashboardDto {
 
-    private Integer id;
 
     private String employeeName;
 
