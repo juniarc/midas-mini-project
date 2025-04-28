@@ -22,7 +22,7 @@ public class EmployeeEntity {
     @Column(name = "emp_id")
     private int id;
 
-    @Column(name = "employee_name", insertable = false, updatable = false)
+    @Column(name = "employee_name")
     private String employeeName;
 
     @Column(name = "date_of_join", nullable = false)
