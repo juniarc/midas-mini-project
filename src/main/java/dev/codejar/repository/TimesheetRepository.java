@@ -10,16 +10,9 @@ import java.util.List;
 
 public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
 
-//    Client findByProjectLead(String leadName);
-//    Client findByProjectName(String name);
-
-
-
     @Query(value = "SELECT submit_date AS submissionDate, report_status AS approvalStatus FROM vw_submission_status", nativeQuery = true)
     List<SubmissionStatusProjection> findSubmissionStatus();
 
 
-//    @Query(value = "SELECT * FROM clients ORDER BY id", nativeQuery = true)
-//    List<Client> findAllClientsNative();
 
 }
