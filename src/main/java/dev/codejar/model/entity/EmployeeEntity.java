@@ -12,18 +12,15 @@ import java.util.Date;
 
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "employees")
 public class EmployeeEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "emp_id")
-    private Integer id;
+    private int id;
 
     @Column(name = "employee_name", insertable = false, updatable = false)
     private String employeeName;

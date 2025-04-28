@@ -11,7 +11,7 @@
     <h2 class="text-center">Employee View</h2>
 
     <div>
-        <a href="/timesheet/create" class="btn btn-primary mb-3">New Employee</a>
+        <a href="/employees/create" class="btn btn-primary mb-3">New Employee</a>
     </div>
 
     <table class="table">
@@ -32,8 +32,8 @@
             <td th:text="${employee.employeeName}"></td>
             <td th:text="${employee.dateJoin}"></td>
             <td th:text="${employee.managerId}"></td>
-            <td th:text="${sheet.employeeEmail}"></td>
-            <td th:text="${sheet.employeePhone}"></td>
+            <td th:text="${employee.employeeEmail}"></td>
+            <td th:text="${employee.employeePhone}"></td>
             <td style="white-space:nowrap">
                 <a class="btn btn-primary btn-sm"
                    th:href="@{/employees/edit(id=${employee.id})}"

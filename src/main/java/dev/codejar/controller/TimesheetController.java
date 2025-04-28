@@ -2,8 +2,10 @@ package dev.codejar.controller;
 
 
 import dev.codejar.model.dto.TimesheetDto;
+import dev.codejar.model.entity.EmployeeEntity;
 import dev.codejar.model.entity.Timesheet;
 import dev.codejar.model.entity.UserEntity;
+import dev.codejar.repository.EmployeeRepository;
 import dev.codejar.repository.TimesheetRepository;
 import dev.codejar.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -25,12 +27,15 @@ public class TimesheetController {
     private TimesheetRepository timesheetRepository;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @GetMapping({"","/"})
     public String getClients(Model model){
         List<Timesheet> timesheetList = timesheetRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-
+        List<EmployeeEntity> employeeList = employeeRepository.findAll();
         for(Timesheet timesheet: timesheetList){
             Integer hrId = timesheet.getHr();
             if(hrId != null){
@@ -43,6 +48,7 @@ public class TimesheetController {
 
         model.addAttribute("timesheet", timesheetList);
         System.out.println("Clients found: " + timesheetList.size());
+        System.out.println("Employees foundL "+ employeeList.size());
 
         return "timesheet/index";
     }

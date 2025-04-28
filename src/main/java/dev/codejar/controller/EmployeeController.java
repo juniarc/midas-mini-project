@@ -1,7 +1,10 @@
 package dev.codejar.controller;
 
 import dev.codejar.model.dto.EmployeeDto;
+import dev.codejar.model.dto.TimesheetDto;
 import dev.codejar.model.entity.EmployeeEntity;
+import dev.codejar.model.entity.Timesheet;
+import dev.codejar.model.entity.UserEntity;
 import dev.codejar.repository.EmployeeRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/employees")
@@ -23,7 +24,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @GetMapping("")
+    @GetMapping
     public String getEmployees(Model model){
         List<EmployeeEntity> employeeList = employeeRepository.findAll();
 
@@ -31,6 +32,36 @@ public class EmployeeController {
         System.out.println("Employees found: " + employeeList);
 
         return "employee/index";
+    }
+
+    @GetMapping("/create")
+    public String createTimesheet(Model model){
+        EmployeeDto employeeDto = new EmployeeDto();
+        model.addAttribute("employeeDto", employeeDto);
+
+        return "employee/create";
+    }
+
+
+    @PostMapping("/create")
+    public String createTimesheet(@Valid @ModelAttribute EmployeeDto employeeDto, BindingResult result){
+        System.out.println("Employe>>>"+employeeDto);
+
+        if (result.hasErrors()){
+            return "employee/create";
+        }
+
+            EmployeeEntity employee = new EmployeeEntity();
+            employee.setEmployeeName(employeeDto.getEmployeeName());
+            employee.setEmployeeEmail(employeeDto.getEmployeeEmail());
+            employee.setDateJoin(employeeDto.getDateJoin());
+            employee.setManagerId(employeeDto.getManagerId());
+            employee.setEmployeePhone(employeeDto.getEmployeePhone());
+
+
+           employeeRepository.save(employee);
+            return "redirect:/employees";
+
     }
 
     @GetMapping("/edit")
