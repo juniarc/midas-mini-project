@@ -44,7 +44,7 @@ public class HrController {
         for (int i = 0; i < size; i++) {
             TimesheetProjection timesheet = timesheets.get(i);
 
-            // Kalau ada filter date, cek dulu
+
             if (dateFilter == null || timesheet.getSubmissionDate().equals(dateFilter)) {
                 HrDashboardDto dto = new HrDashboardDto(
                         timesheet.getId(),
@@ -58,7 +58,7 @@ public class HrController {
         }
 
         model.addAttribute("dashboard", dashboard);
-        model.addAttribute("dateFilter", dateFilter); // biar kalau mau set di form
+        model.addAttribute("dateFilter", dateFilter);
 
         return "hr/index";
     }
