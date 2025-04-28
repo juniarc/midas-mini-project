@@ -1,6 +1,6 @@
 package dev.codejar.repository.projection;
 
-public interface EmployeeProjection {
+public interface EmployeeManagerProjection {
 
     String getEmployeeName();
     String getManagerName();

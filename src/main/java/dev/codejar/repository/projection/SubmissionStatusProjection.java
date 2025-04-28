@@ -2,7 +2,7 @@ package dev.codejar.repository.projection;
 
 import java.util.Date;
 
-public interface TimesheetProjection {
+public interface SubmissionStatusProjection {
 
     Integer getId();
 

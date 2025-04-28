@@ -2,7 +2,7 @@ package dev.codejar.repository;
 
 
 import dev.codejar.model.entity.Timesheet;
-import dev.codejar.repository.projection.TimesheetProjection;
+import dev.codejar.repository.projection.SubmissionStatusProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,13 +15,8 @@ public interface TimesheetRepository extends JpaRepository<Timesheet, Integer> {
 
 
 
-    @Query(
-            value = "SELECT t.date AS submissionDate, m.report_status AS approvalStatus " +
-                    "FROM timesheet t " +
-                    "JOIN timesheet m ON t.report_manager = m.username",
-            nativeQuery = true
-    )
-    List<TimesheetProjection> findDateAndStatus();
+    @Query(value = "SELECT submission_date AS submissionDate, approval_status AS approvalStatus FROM vw_submission_status", nativeQuery = true)
+    List<SubmissionStatusProjection> findSubmissionStatus();
 
 
 //    @Query(value = "SELECT * FROM clients ORDER BY id", nativeQuery = true)

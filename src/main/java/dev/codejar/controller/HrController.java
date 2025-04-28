@@ -2,12 +2,10 @@ package dev.codejar.controller;
 
 
 import dev.codejar.model.dto.HrDashboardDto;
-import dev.codejar.model.entity.EmployeeEntity;
-import dev.codejar.model.entity.Timesheet;
 import dev.codejar.repository.EmployeeRepository;
 import dev.codejar.repository.TimesheetRepository;
-import dev.codejar.repository.projection.EmployeeProjection;
-import dev.codejar.repository.projection.TimesheetProjection;
+import dev.codejar.repository.projection.EmployeeManagerProjection;
+import dev.codejar.repository.projection.SubmissionStatusProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -34,19 +32,18 @@ public class HrController {
     public String getHr(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFilter,
                         Model model) {
 
-        List<EmployeeProjection> employees = employeeRepository.findEmployeeAndManager();
-        List<TimesheetProjection> timesheets = timesheetRepository.findDateAndStatus();
+        List<EmployeeManagerProjection> employees = employeeRepository.findEmployeeAndManager();
+        List<SubmissionStatusProjection> timesheets = timesheetRepository.findSubmissionStatus();
 
         List<HrDashboardDto> dashboard = new ArrayList<>();
 
         int size = Math.min(employees.size(), timesheets.size());
         for (int i = 0; i < size; i++) {
-            TimesheetProjection timesheet = timesheets.get(i);
+            SubmissionStatusProjection timesheet = timesheets.get(i);
 
-            // Kalau ada filter date, cek dulu
+
             if (dateFilter == null || timesheet.getSubmissionDate().equals(dateFilter)) {
                 HrDashboardDto dto = new HrDashboardDto(
-                        timesheet.getId(),
                         employees.get(i).getEmployeeName(),
                         employees.get(i).getManagerName(),
                         timesheet.getSubmissionDate(),
@@ -57,7 +54,7 @@ public class HrController {
         }
 
         model.addAttribute("dashboard", dashboard);
-        model.addAttribute("dateFilter", dateFilter); // biar kalau mau set di form
+        model.addAttribute("dateFilter", dateFilter);
 
         return "hr/index";
     }
