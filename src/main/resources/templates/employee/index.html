@@ -40,7 +40,11 @@
                    >
                     EDIT
                 </a>
-
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{/employees/delete(id=${employee.id})}"
+                   onclick="return confirm('Are you sure?')">
+                    DELETE
+                </a>
             </td>
         </tr>
         </tbody>

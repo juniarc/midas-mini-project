@@ -30,7 +30,6 @@ public class HrController {
     private final TimesheetRepository timesheetRepository;
 
 
-
     @GetMapping({"", "/"})
     public String getHr(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFilter,
                         Model model) {

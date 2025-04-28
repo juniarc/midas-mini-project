@@ -65,8 +65,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/edit")
-    public String updateEmployee(Model model, @RequestParam Integer userId){
-        EmployeeEntity employee = employeeRepository.findById(userId).orElse(null);
+    public String updateEmployee(Model model, @RequestParam Integer id){
+        EmployeeEntity employee = employeeRepository.findById(id).orElse(null);
         if(employee == null){
             return "redirect:/employees";
         }
@@ -84,6 +84,41 @@ public class EmployeeController {
         model.addAttribute("employeeDto", employeeDto);
 
         return "employee/edit";
+    }
 
+    @PostMapping("/edit")
+    public String editEmployee(Model model, @RequestParam int id, @Valid @ModelAttribute EmployeeDto employeeDto, BindingResult result) {
+
+        EmployeeEntity employee = employeeRepository.findById(id).orElse(null);
+
+        if (employee == null){
+            return "redirect:/timesheet";
+        }
+
+        model.addAttribute("timesheet", employee);
+
+
+        // update entity
+        employee.setEmployeeName(employeeDto.getEmployeeName());
+        employee.setEmployeeEmail(employeeDto.getEmployeeEmail());
+        employee.setManagerId(employeeDto.getManagerId());
+        employee.setEmployeePhone(employeeDto.getEmployeePhone());
+
+
+        employeeRepository.save(employee);
+        return "redirect:/employees";
+
+    }
+
+
+    @GetMapping("delete")
+    public String deleteEmployee(@RequestParam int id){
+        EmployeeEntity employee = employeeRepository.findById(id).orElse(null);
+
+        if (employee != null){
+            employeeRepository.delete(employee);
+        }
+
+        return "redirect:/employees";
     }
 }
