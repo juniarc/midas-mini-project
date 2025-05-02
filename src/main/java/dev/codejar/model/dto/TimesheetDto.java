@@ -13,8 +13,8 @@ import java.util.Date;
 public class TimesheetDto {
 
 
-    @NotNull(message = "username cannot be null")
-    private String username;
+//    @NotNull(message = "username cannot be null")
+//    private String username;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
@@ -33,14 +33,14 @@ public class TimesheetDto {
     @NotNull(message = "remark cannot be null")
     private String remark;
 
-    @NotNull(message = "report manager cannot be null")
-    private String reportManager;
-
-    @NotNull(message = "report status cannot be null")
-    private String reportStatus;
-
-    @NotNull(message = "report remark cannot be null")
-    private String reportRemark;
+//    @NotNull(message = "report manager cannot be null")
+//    private String reportManager;
+//
+//    @NotNull(message = "report status cannot be null")
+//    private String reportStatus;
+//
+//    @NotNull(message = "report remark cannot be null")
+//    private String reportRemark;
 
 
 }

@@ -19,8 +19,8 @@ public class Timesheet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "username")
-    private String username;
+//    @Column(name = "username")
+//    private String username;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
@@ -39,15 +39,15 @@ public class Timesheet {
     @Column(name = "remark")
     private String remark;
 
-    @Column(name = "report_manager")
-    private String reportManager;
-
-
-    @Column(name = "report_status")
-    private String reportStatus;
-
-    @Column(name = "report_remark")
-    private String reportRemark;
+//    @Column(name = "report_manager")
+//    private String reportManager;
+//
+//
+//    @Column(name = "report_status")
+//    private String reportStatus;
+//
+//    @Column(name = "report_remark")
+//    private String reportRemark;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
