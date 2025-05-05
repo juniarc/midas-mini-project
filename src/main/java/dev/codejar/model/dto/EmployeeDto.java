@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 public class EmployeeDto {
 
-    private Integer id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)

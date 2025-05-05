@@ -2,12 +2,13 @@ package dev.codejar.repository.projection;
 
 import java.util.Date;
 
-public interface SubmissionStatusProjection {
+public interface HrDashboardProjection {
 
-    Integer getId();
-
+    String getEmployeeName();
+    String getManagerName();
     Date getSubmissionDate();
-
     String getApprovalStatus();
+
+
 
 }

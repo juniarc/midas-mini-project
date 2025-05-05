@@ -77,32 +77,64 @@ body{
     <title>Document</title>
 </head>
 <body>
-    
-    <form class="form" id="signinForm" method="post">
-        <p class="form-title">Log in to your account</p>
-        <div class="input-container">
-        <input type="text" placeholder="Enter username" id="username">
-        <span>
-        </span>
-    </div>
-    <div class="input-container">
-        <input type="password" placeholder="Enter password" id="password">
+
+    <form class="form" id="signinForm">
+            <p class="form-title">Log in to your account</p>
+            <div class="input-container">
+            <input type="text" placeholder="Enter username" id="username">
+            <span>
+            </span>
         </div>
-        <button type="submit" class="submit">
-        Log in
-    </button>
+        <div class="input-container">
+            <input type="password" placeholder="Enter password" id="password">
+            </div>
+            <button type="submit" class="submit">
+            Log in
+        </button>
 
-    <p class="signup-link">
-        No account?
-        <a href="signup.html">Sign up</a>
-    </p>
+        <p class="signup-link">
+            No account?
+            <a href="signup.html">Sign up</a>
+        </p>
 
-    <p class="signup-link">
-        If you forgot your password click
-        <a href="#">forget password</a>
-    </p>
+        <p class="signup-link">
+            If you forgot your password click
+            <a href="#">forget password</a>
+        </p>
 
-</form>
+    </form>
+
+    <script>
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Login gagal");
+                }
+                return res.json();
+            })
+            .then(data => {
+
+                localStorage.setItem("token", data.token);
+
+
+                window.location.href = "/index";
+            })
+            .catch(err => {
+                alert("Login gagal. Cek username/password.");
+            });
+        });
+    </script>
+
 
 </body>
 </html>
