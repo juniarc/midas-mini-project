@@ -27,7 +27,7 @@ public class HrController {
 
     @GetMapping("/viewHR")
     public List<HrDashboardProjection> viewHr(){
-        return hrService.hrDashboardProjections();
+        return hrService.hrView();
     }
 
 }

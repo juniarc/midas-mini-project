@@ -33,10 +33,6 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    // GET emplooyeName, managerName, submissionDate, and approval
-    public List<HrDashboardProjection> employeeViewPage(){
-        return employeeRepository.findEmployeeManagerWithTimesheet();
-    }
 
 
     //ADD New Employee
