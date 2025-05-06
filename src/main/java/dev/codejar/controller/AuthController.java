@@ -46,7 +46,6 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest){
         AuthenticationResponse saved = authenticationService.login(loginRequest);
