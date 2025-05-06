@@ -7,6 +7,8 @@ import dev.codejar.repository.TimesheetRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +52,11 @@ public class TimesheetService {
                    modelMapper.map(timesheet, TimesheetDto.class);
                    return ResponseEntity.ok(timesheet);
                 }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Timesheet> getID(@PathVariable("id") Integer id){
+        return timesheetRepository.findById(id);
     }
 
 
