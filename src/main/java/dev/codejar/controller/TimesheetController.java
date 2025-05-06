@@ -5,180 +5,82 @@ import dev.codejar.model.dto.TimesheetDto;
 import dev.codejar.model.entity.EmployeeEntity;
 import dev.codejar.model.entity.Timesheet;
 import dev.codejar.model.entity.UserEntity;
+import dev.codejar.payload.response.BaseResponse;
 import dev.codejar.repository.EmployeeRepository;
 import dev.codejar.repository.TimesheetRepository;
 import dev.codejar.repository.UserRepository;
+import dev.codejar.service.TimesheetService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/timesheet")
 public class TimesheetController {
 
     @Autowired
-    private TimesheetRepository timesheetRepository;
+    private TimesheetService timesheetService;
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    @GetMapping("/all")
+    public List<Timesheet> getAllTimesheet(){
 
-    @GetMapping({"","/"})
-    public String getClients(Model model){
-        List<Timesheet> timesheetList = timesheetRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        List<EmployeeEntity> employeeList = employeeRepository.findAll();
-        for(Timesheet timesheet: timesheetList){
-            Integer hrId = timesheet.getHr();
-            if(hrId != null){
-                userRepository.findById(hrId.longValue())
-                        .map(UserEntity::getUsername)
-                        .ifPresent(timesheet::setHrUsername);
-            }
-
-        }
-
-        model.addAttribute("timesheet", timesheetList);
-        System.out.println("Clients found: " + timesheetList.size());
-        System.out.println("Employees foundL "+ employeeList.size());
-
-        return "timesheet/index";
+        return timesheetService.timesheetList();
     }
-
-
-
-    @GetMapping("/create")
-    public String createTimesheet(Model model){
-        TimesheetDto timesheetDto = new TimesheetDto();
-        model.addAttribute("timesheetDto", timesheetDto);
-
-        return "timesheet/create";
-    }
-
 
     @PostMapping("/create")
-    public String createTimesheet(@Valid @ModelAttribute TimesheetDto timesheetDto, BindingResult result){
+    public ResponseEntity<BaseResponse<Timesheet>> createTimesheet(@Valid @RequestBody Timesheet timesheet){
 
-        if (result.hasErrors()){
-            return "timesheet/create";
-        }
+        Timesheet addTimesheet = timesheetService.insertTimesheet(timesheet);
 
-        // convert hr input from username to id
-        Timesheet timesheet = getTimesheet(timesheetDto);
-        Optional<UserEntity> user = userRepository.findByUsername(timesheetDto.getHr());
-        Integer hrId = user.map(UserEntity::getId).map(Long::intValue).orElse(null);
+        BaseResponse<Timesheet> response = new BaseResponse<>();
+        response.setMessage("Succcess insert timesheet");
+        response.setStatus(true);
+        response.setData(addTimesheet);
 
-        if(hrId != null){
-            timesheet.setHr(hrId);
-            timesheetRepository.save(timesheet);
-            return "redirect:/timesheet";
-        }
-
-        return "/create";
+        return ResponseEntity.ok(response);
 
     }
 
 
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Timesheet> editTimesheet(@PathVariable("id") Integer id,@Valid @RequestBody TimesheetDto timesheetDto){
+        return timesheetService.editTimesheet(id, timesheetDto);
+    }
 
-    private static Timesheet getTimesheet(TimesheetDto timesheetDto) {
-
-        Timesheet timesheet = new Timesheet();
-
-        timesheet.setUsername(timesheetDto.getUsername());
-        timesheet.setDate(timesheetDto.getDate());
-        timesheet.setTask(timesheetDto.getTask());
-//        timesheet.setHr(timesheetDto.getHr());
-        timesheet.setStatus(timesheetDto.getStatus());
-        timesheet.setRemark(timesheetDto.getRemark());
-        timesheet.setReportManager(timesheetDto.getReportManager());
-        timesheet.setReportStatus(timesheetDto.getReportStatus());
-        timesheet.setReportRemark(timesheetDto.getReportRemark());
-        return timesheet;
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteTimesheet(@PathVariable("id") Integer id){
+        return timesheetService.deleteTimesheet(id);
     }
 
 
-    @GetMapping("/edit")
-    public String editTimesheet(Model model, @RequestParam int id){
-        Timesheet timesheet = timesheetRepository.findById(id).orElse(null);
-        if (timesheet == null){
-            return "redirect:/timesheet";
-        }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> errorHandler(MethodArgumentNotValidException e){
 
-        TimesheetDto timesheetDto = new TimesheetDto();
-        userRepository.findById(timesheet.getHr().longValue())
-                .map(UserEntity::getUsername)
-                .ifPresent(timesheetDto::setHr);
-        timesheetDto.setUsername(timesheet.getUsername());
-        timesheetDto.setDate(timesheet.getDate());
-        timesheetDto.setTask(timesheet.getTask());
-        timesheetDto.setStatus(timesheet.getStatus());
-        timesheetDto.setRemark(timesheet.getRemark());
-        timesheetDto.setReportManager(timesheet.getReportManager());
-        timesheetDto.setReportStatus(timesheet.getReportStatus());
-        timesheetDto.setReportRemark(timesheet.getReportRemark());
+        var error = new HashMap<String, String>();
+        e.getBindingResult().getAllErrors()
+                .forEach(objectError -> {
+                    String fieldError = ((FieldError) objectError).getField();
+                    String messageError = objectError.getDefaultMessage();
 
-        model.addAttribute("timesheet", timesheet);
-        model.addAttribute("timesheetDto", timesheetDto);
-
-        return "timesheet/edit";
+                    error.put(fieldError, messageError);
+                });
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 
     }
 
-
-    @PostMapping("/edit")
-    public String editTimesheet(Model model, @RequestParam int id, @Valid @ModelAttribute TimesheetDto timesheetDto, BindingResult result) {
-
-        Timesheet timesheet = timesheetRepository.findById(id).orElse(null);
-
-        if (timesheet == null){
-            return "redirect:/timesheet";
-        }
-
-        model.addAttribute("timesheet", timesheet);
-
-
-        // update entity
-        Optional<UserEntity> user = userRepository.findByUsername(timesheetDto.getHr());
-        Integer hrId = user.map(UserEntity::getId).map(Long::intValue).orElse(null);
-
-        timesheet.setUsername(timesheetDto.getUsername());
-        timesheet.setTask(timesheetDto.getTask());
-        timesheet.setStatus(timesheetDto.getStatus());
-        timesheet.setRemark(timesheetDto.getRemark());
-        timesheet.setReportManager(timesheetDto.getReportManager());
-        timesheet.setReportStatus(timesheetDto.getReportStatus());
-        timesheet.setReportRemark(timesheetDto.getReportRemark());
-
-
-        if(hrId != null){
-            timesheet.setHr(hrId);
-            timesheetRepository.save(timesheet);
-            return "redirect:/timesheet";
-
-        }
-
-        return "/edit";
-    }
-
-
-    @GetMapping("delete")
-    public String deleteTimesheet(@RequestParam int id){
-        Timesheet timesheet = timesheetRepository.findById(id).orElse(null);
-
-        if (timesheet != null){
-            timesheetRepository.delete(timesheet);
-        }
-
-        return "redirect:/timesheet";
-    }
 
 
 
