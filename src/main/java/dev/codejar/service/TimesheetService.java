@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,20 +42,23 @@ public class TimesheetService {
 
     //GET AllTimesheet
     public List<TimesheetDto> timesheetList(){
-        List<Timesheet> timesheets = timesheetRepository.findAll();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return timesheets.stream().map(
-                timesheet -> {
-                    TimesheetDto dto = new TimesheetDto();
-                    dto.setDate(timesheet.getDate());
-                    dto.setTask(timesheet.getTask());
-                    dto.setHr(String.valueOf(timesheet.getHr()));
-                    dto.setStatus(timesheet.getStatus());
-                    dto.setRemark(timesheet.getRemark());
-                    dto.setUsername(timesheet.getUser().getUsername());
-                    return dto;
-                }
-        ).collect(Collectors.toList());
+        UserEntity currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        List<Timesheet> timesheets = timesheetRepository.findByUser(currentUser);
+
+        return timesheets.stream().map(timesheet -> {
+            TimesheetDto dto = new TimesheetDto();
+            dto.setDate(timesheet.getDate());
+            dto.setTask(timesheet.getTask());
+            dto.setHr(String.valueOf(timesheet.getHr()));
+            dto.setStatus(timesheet.getStatus());
+            dto.setRemark(timesheet.getRemark());
+            dto.setUsername(currentUser.getUsername()); // bisa langsung currentUser juga
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     //ADD New Timesheet
