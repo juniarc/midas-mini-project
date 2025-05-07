@@ -41,12 +41,14 @@ public class TimesheetService {
         return timesheets.stream().map(
                 timesheet -> {
                     TimesheetDto dto = new TimesheetDto();
+                    dto.setId(timesheet.getId());
                     dto.setDate(timesheet.getDate());
                     dto.setTask(timesheet.getTask());
                     dto.setHr(String.valueOf(timesheet.getHr()));
                     dto.setStatus(timesheet.getStatus());
                     dto.setRemark(timesheet.getRemark());
                     dto.setUsername(timesheet.getUser().getUsername());
+                    dto.setReportStatus(timesheet.getReportStatus());
                     return dto;
                 }
         ).collect(Collectors.toList());
@@ -60,6 +62,7 @@ public class TimesheetService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         timesheet.setUser(currentUser);
+        timesheet.setUsername(username);
 
         return timesheetRepository.save(timesheet);
     }
@@ -74,7 +77,7 @@ public class TimesheetService {
                     timesheet.setHr(Integer.valueOf(timesheetDto.getHr()));
                     timesheet.setStatus(timesheetDto.getStatus());
                     timesheet.setRemark(timesheetDto.getRemark());
-
+                    timesheet.setReportStatus(timesheetDto.getReportStatus());
 
                     modelMapper.map(timesheet, TimesheetDto.class);
                     return ResponseEntity.ok(timesheetRepository.save(timesheet));

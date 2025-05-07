@@ -17,7 +17,7 @@ public interface HrRepository extends JpaRepository<HrEntity, Integer> {
         t.submit_date as submissionDate,
         t.report_status as approvalStatus
     FROM employees e
-    LEFT JOIN employees m ON e.manger_id = m.emp_id
+    LEFT JOIN employees m ON e.manager_id = m.emp_id
     LEFT JOIN timesheet t ON e.emp_id = t.id
 """, nativeQuery = true)
     List<HrDashboardProjection> findEmployeeManagerWithTimesheet();

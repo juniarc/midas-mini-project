@@ -7,7 +7,6 @@ import dev.codejar.model.entity.Timesheet;
 import dev.codejar.model.entity.UserEntity;
 import dev.codejar.payload.response.BaseResponse;
 import dev.codejar.repository.EmployeeRepository;
-import dev.codejar.repository.projection.HrDashboardProjection;
 import dev.codejar.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
