@@ -16,14 +16,14 @@ public class ApprovalService {
     @Autowired
     private ApprovalRepository approvalRepository;
 
-    public Approval createFromTimesheet(Timesheet timesheet) {
-        Approval approval = new Approval();
-        approval.setUsername(timesheet.getUsername());
-        approval.setRm(timesheet.getRManager());
-        approval.setRmStatus("Pending");
-        approval.setRmRemark(null);
-        return approvalRepository.save(approval);
-    }
+//    public Approval createFromTimesheet(Timesheet timesheet) {
+//        Approval approval = new Approval();
+//        approval.setUsername(timesheet.getUsername());
+//        approval.setRm(timesheet.getRManager());
+//        approval.setRmStatus("Pending");
+//        approval.setRmRemark(null);
+//        return approvalRepository.save(approval);
+//    }
 
     public List<Approval> getPendingApprovals() {
         return approvalRepository.findByRmStatus("Pending");

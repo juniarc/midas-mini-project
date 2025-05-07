@@ -33,6 +33,8 @@ public class TimesheetDto {
     @NotNull(message = "remark cannot be null")
     private String remark;
 
+    private String username;
+
 //    @NotNull(message = "report manager cannot be null")
 //    private String reportManager;
 //

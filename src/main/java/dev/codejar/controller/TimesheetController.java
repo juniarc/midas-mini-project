@@ -35,9 +35,15 @@ public class TimesheetController {
 
 
     @GetMapping("/all")
-    public List<Timesheet> getAllTimesheet(){
+    public List<TimesheetDto> getAllTimesheet(){
 
         return timesheetService.timesheetList();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Timesheet> getId(@PathVariable("id") Integer id){
+        return timesheetService.getID(id);
+
     }
 
     @PostMapping("/create")

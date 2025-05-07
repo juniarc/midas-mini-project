@@ -43,10 +43,6 @@ public class EmployeeController {
         return employeeService.listEmployee();
     }
 
-    @GetMapping("/view")
-    public List<HrDashboardProjection> getViewEmployee(){
-        return employeeService.employeeViewPage();
-    }
 
 
     @PostMapping("/create")
