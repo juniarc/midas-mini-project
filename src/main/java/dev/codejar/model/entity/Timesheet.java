@@ -39,12 +39,12 @@ public class Timesheet {
     @Column(name = "remark")
     private String remark;
 
-    @Column(name = "report_manager")
-    private String reportManager;
+//    @Column(name = "report_manager")
+//    private String reportManager;
 
-//
-//    @Column(name = "report_status")
-//    private String reportStatus;
+
+    @Column(name = "report_status")
+    private String reportStatus;
 //
 //    @Column(name = "report_remark")
 //    private String reportRemark;

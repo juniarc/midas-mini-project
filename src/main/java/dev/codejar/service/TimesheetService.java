@@ -56,7 +56,7 @@ public class TimesheetService {
             dto.setHr(String.valueOf(timesheet.getHr()));
             dto.setStatus(timesheet.getStatus());
             dto.setRemark(timesheet.getRemark());
-            dto.setUsername(currentUser.getUsername()); // bisa langsung currentUser juga
+            dto.setUsername(currentUser.getUsername());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -79,7 +79,7 @@ public class TimesheetService {
 
 
     // UPDATE New Timesheet
-    public ResponseEntity<Timesheet> editTimesheet(Integer id, TimesheetDto timesheetDto){
+    public ResponseEntity<TimesheetDto> editTimesheet(Integer id, TimesheetDto timesheetDto) {
         return timesheetRepository.findById(id)
                 .map(timesheet -> {
                     timesheet.setDate(timesheetDto.getDate());
@@ -88,9 +88,17 @@ public class TimesheetService {
                     timesheet.setStatus(timesheetDto.getStatus());
                     timesheet.setRemark(timesheetDto.getRemark());
 
+                    Timesheet updated = timesheetRepository.save(timesheet); // <--- Save ke DB
 
-                    modelMapper.map(timesheet, TimesheetDto.class);
-                    return ResponseEntity.ok(timesheet);
+                    TimesheetDto responseDto = new TimesheetDto();
+                    responseDto.setDate(updated.getDate());
+                    responseDto.setTask(updated.getTask());
+                    responseDto.setHr(String.valueOf(updated.getHr()));
+                    responseDto.setStatus(updated.getStatus());
+                    responseDto.setRemark(updated.getRemark());
+                    responseDto.setUsername(updated.getUser().getUsername());
+
+                    return ResponseEntity.ok(responseDto);
                 }).orElse(ResponseEntity.notFound().build());
     }
 

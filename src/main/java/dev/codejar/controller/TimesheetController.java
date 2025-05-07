@@ -62,7 +62,7 @@ public class TimesheetController {
 
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Timesheet> editTimesheet(@PathVariable("id") Integer id,@Valid @RequestBody TimesheetDto timesheetDto){
+    public ResponseEntity<TimesheetDto> editTimesheet(@PathVariable("id") Integer id,@Valid @RequestBody TimesheetDto timesheetDto){
         return timesheetService.editTimesheet(id, timesheetDto);
     }
 
