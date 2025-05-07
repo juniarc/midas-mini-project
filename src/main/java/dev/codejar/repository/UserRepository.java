@@ -1,7 +1,7 @@
 package dev.codejar.repository;
 
-import dev.codejar.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import dev.codejar.model.entity.UserEntity;
 
 import java.util.Optional;
 

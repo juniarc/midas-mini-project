@@ -38,7 +38,4 @@ public class ApprovalController {
         approvalRepository.save(approval);
         return ResponseEntity.ok("Approval updated");
     }
-
-
-
 }

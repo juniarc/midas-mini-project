@@ -5,7 +5,6 @@ import dev.codejar.model.entity.UserEntity;
 import dev.codejar.payload.request.LoginRequest;
 import dev.codejar.payload.request.SignupRequest;
 import dev.codejar.payload.response.AuthenticationResponse;
-
 import dev.codejar.repository.UserRepository;
 import dev.codejar.security.service.AuthenticationService;
 import dev.codejar.security.service.JwtService;
@@ -45,7 +44,6 @@ public class AuthController {
         UserEntity user = authenticationService.signup(registerRequest);
         return ResponseEntity.ok(user);
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest){

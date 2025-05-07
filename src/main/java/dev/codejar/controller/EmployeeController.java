@@ -43,14 +43,10 @@ public class EmployeeController {
         return employeeService.listEmployee();
     }
 
-    @GetMapping("/view")
-    public List<HrDashboardProjection> getViewEmployee(){
-        return employeeService.employeeViewPage();
-    }
-
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<EmployeeEntity>> createEmployee(@RequestBody EmployeeEntity employee){
+        System.out.println(employee);
 
         EmployeeEntity entity = employeeService.createEmployee(employee);
 
@@ -63,6 +59,10 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeEntity> getEmployeeById(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<EmployeeEntity> editEmployee(@PathVariable("id") Integer id, @RequestBody EmployeeDto employeeDto){

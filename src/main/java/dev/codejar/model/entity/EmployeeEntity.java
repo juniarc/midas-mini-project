@@ -30,7 +30,7 @@ public class EmployeeEntity {
     @Column(name = "date_of_join", nullable = false)
     private Date dateJoin;
 
-    @Column(name = "manger_id")
+    @Column(name = "manager_id")
     private Integer managerId;
 
     @Column(name = "employee_phone")

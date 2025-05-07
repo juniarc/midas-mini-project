@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Integer> {
@@ -24,5 +25,7 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Intege
     LEFT JOIN timesheet t ON e.emp_id = t.id
 """, nativeQuery = true)
     List<HrDashboardProjection> findEmployeeManagerWithTimesheet();
+
+    Optional<EmployeeEntity> findById(Integer id);
 
 }

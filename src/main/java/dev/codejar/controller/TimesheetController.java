@@ -35,7 +35,7 @@ public class TimesheetController {
 
 
     @GetMapping("/all")
-    public List<Timesheet> getAllTimesheet(){
+    public List<TimesheetDto> getAllTimesheet(){
 
         return timesheetService.timesheetList();
     }
@@ -63,6 +63,11 @@ public class TimesheetController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTimesheet(@PathVariable("id") Integer id){
         return timesheetService.deleteTimesheet(id);
+    }
+
+    @GetMapping("/{id}")
+    public Timesheet getTimesheetById(@PathVariable("id") Integer id){
+        return timesheetService.findTimesheetById(id);
     }
 
 

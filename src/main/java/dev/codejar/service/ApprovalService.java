@@ -18,8 +18,8 @@ public class ApprovalService {
 
     public Approval createFromTimesheet(Timesheet timesheet) {
         Approval approval = new Approval();
-        approval.setUsername(timesheet.getUsername());
-        approval.setRm(timesheet.getReportManager());
+//        approval.setUsername(timesheet.getUsername());
+//        approval.setRm(timesheet.getReportManager());
         approval.setRmStatus("Pending");
         approval.setRmRemark(null);
         return approvalRepository.save(approval);

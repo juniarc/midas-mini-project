@@ -33,10 +33,6 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    // GET emplooyeName, managerName, submissionDate, and approval
-    public List<HrDashboardProjection> employeeViewPage(){
-        return employeeRepository.findEmployeeManagerWithTimesheet();
-    }
 
 
     //ADD New Employee
@@ -57,6 +53,7 @@ public class EmployeeService {
 
 
                     modelMapper.map(employeeEntity, EmployeeDto.class);
+
                     return ResponseEntity.ok(employeeRepository.save(employeeEntity));
                 }).orElse(ResponseEntity.notFound().build());
     }
@@ -74,6 +71,8 @@ public class EmployeeService {
         return ResponseEntity.ok().build();
     }
 
-
+    public EmployeeEntity getEmployeeById(Integer id){
+        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
 
 }

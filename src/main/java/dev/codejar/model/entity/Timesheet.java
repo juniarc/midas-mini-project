@@ -19,8 +19,8 @@ public class Timesheet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @Column(name = "username")
-//    private String username;
+    @Column(name = "username")
+    private String username;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
