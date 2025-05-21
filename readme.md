@@ -40,7 +40,7 @@ cd midas-mini-project-main
 
 ### 2. Configure the application.properties file
 
-Set your oracle DB connection based on your environment
+Set your Oracle DB connection based on your environment
 
 ```
 spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
